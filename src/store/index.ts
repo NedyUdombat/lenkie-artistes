@@ -1,17 +1,19 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import type { PreloadedState } from "@reduxjs/toolkit";
 
 import artistsReducer from "./modules/artist";
 
-
-const store = configureStore({
-  reducer: {
-    artist: artistsReducer,
-  },
-  
+const rootReducer = combineReducers({
+  artist: artistsReducer,
 });
 
+export const store = (preloadedState?: PreloadedState<RootState>) => {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
+};
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-
-export default store;
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof store>;
+export type AppDispatch = AppStore["dispatch"];

@@ -2,24 +2,26 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../index";
 import { http } from "../../api/client";
 
-interface ArtistsState {
+export interface ArtistsState {
   artists: any[];
   artist: any;
   artistTopTracks: any[];
   artistAlbums: any[];
   isLoading: boolean;
   error: any;
+  hasError: boolean;
   status: string;
   currentTrack: string;
 }
 
-const initialState: ArtistsState = {
+export const initialState: ArtistsState = {
   artists: [],
   artist: {},
   artistTopTracks: [],
   artistAlbums: [],
   isLoading: false,
   error: {},
+  hasError: true,
   status: "",
   currentTrack: "",
 };
@@ -33,7 +35,7 @@ export const artistsSlice = createSlice({
     },
     searchArtistsSuccess: (state, action) => {
       state.isLoading = false;
-      state.artists = action.payload.data
+      state.artists = action.payload
         .map((item: { artist: any }) => item.artist)
         .filter(
           (value: { id: any }, index: any, self: any[]) =>
@@ -43,6 +45,7 @@ export const artistsSlice = createSlice({
     },
     searchArtistsFailure: (state) => {
       state.isLoading = false;
+      state.hasError = true;
     },
     searchSingleArtistSuccess: (state, action) => {
       state.isLoading = false;
@@ -79,7 +82,9 @@ export function fetchArtists(searchParam?: string) {
     dispatch(searchArtists());
 
     try {
-      const { data } = await http.get(
+      const {
+        data: { data },
+      } = await http.get(
         `/search?q=artist:"${searchParam ? searchParam : "eminem"}"`
       );
 

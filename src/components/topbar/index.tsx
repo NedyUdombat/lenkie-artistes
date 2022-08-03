@@ -33,7 +33,7 @@ const Topbar = () => {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href={ROUTE_URLS.HOME_URL}>Lenkie Music</Navbar.Brand>
+        <Navbar.Brand href={ROUTE_URLS.HOME_URL}>Lenkie Artistes</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto">
