@@ -1,25 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import { useLocation } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 
+import { useAppSelector, useAppDispatch } from "../../hooks/store";
+
+import {
+  artistsSelector,
+  fetchSingleArtistAlbums,
+} from "../../store/modules/artist";
+import ArtistAlbumsContentLoader from "./contentLoader";
+
 const ArtistAlbums = () => {
-  return (
-    <Row xs={1} md={2} className="g-4">
-      {Array.from({ length: 4 }).map((_, idx) => (
-        <Col>
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px160" />
+  const { artistAlbums, isLoading } = useAppSelector(artistsSelector);
+  const dispatch = useAppDispatch();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    dispatch(fetchSingleArtistAlbums(location.pathname.split("/artist/")[1]));
+  }, [dispatch, location.pathname]);
+
+  return isLoading ? (
+    <ArtistAlbumsContentLoader />
+  ) : (
+    <Row xs={1} md={2} lg={3} className="g-4">
+      {artistAlbums.map((album, idx) => (
+        <Col key={album.id} className="d-flex">
+          <Card className="album-card mb-5 align-items-stretch">
+            <Card.Img variant="top" src={album.cover_big} />
             <Card.Body>
-              <Card.Title>Card title</Card.Title>
-              <Card.Text>
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </Card.Text>
+              <Card.Title>{album.title}</Card.Title>
+              <Card.Text>Listeners: {album.fans}</Card.Text>
             </Card.Body>
             <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
+              <small className="text-muted">
+                Release date: {album.release_date}
+              </small>
             </Card.Footer>
           </Card>
         </Col>
