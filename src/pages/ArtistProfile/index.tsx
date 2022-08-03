@@ -7,6 +7,7 @@ import "./style.css";
 import ArtistAlbums from "../../components/artist-albums";
 import ArtistsTopTracks from "../../components/artist-top-tracks";
 import ArtistInfo from "../../components/artist-info";
+import MusicPlayer from "../../components/music-player";
 
 const ArtistProfile = () => {
   return (
@@ -21,6 +22,8 @@ const ArtistProfile = () => {
           </div>
         </div>
       </Container>
+
+      <MusicPlayer />
 
       <Container className="py-3 mt-5 albums section">
         <h3 className="title">Albums</h3>
